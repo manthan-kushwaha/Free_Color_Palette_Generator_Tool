@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Free Color Palette Generator Tool by Manthan Kushwaha</title>
+
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Manthan Kushwaha">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Generate beautiful color palettes online for free. Perfect for designers, developers, and artists by Manthan Kushwaha.">
+    <meta name="keywords" content="color palette generator, free color palette tool, online color picker, create color schemes, design tool, color combinations, hex color generator, UI design, web design">
+
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Free Color Palette Generator Tool">
+    <meta property="og:description" content="Create beautiful color palettes online for free. Ideal for designers, developers, and artists.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://USERNAME.github.io/Free_Color_Palette_Generator_Tool/">
+    <meta property="og:image" content="https://pbs.twimg.com/profile_images/1372859635720331267/Yi7qK-_k_400x400.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Color Palette Generator Tool">
+    <meta name="twitter:description" content="Generate stunning color palettes online for free. Perfect for designers and developers.">
+    <meta name="twitter:image" content="https://pbs.twimg.com/profile_images/1372859635720331267/Yi7qK-_k_400x400.jpg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        
+        #palette {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .color-box {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+        
+        .color-box:hover {
+            transform: scale(1.05);
+        }
+        
+        #controls button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎨 Color Palette Generator Tool | Create Stunning Color Palette</h1>
+    <div id="controls">
+        <button onclick="generateRandomPalette()">Random</button>
+        <button onclick="generateComplementaryPalette()">Complementary</button>
+        <button onclick="generateTheme('minimalist')">Minimalist</button>
+        <button onclick="generateTheme('cool')">Cool</button>
+        <button onclick="generateTheme('warm')">Warm</button>
+        <button onclick="generateTheme('eco')">Eco-Friendly</button>
+    </div>
+    <div id="palette"></div>
+
+    <script>
+        const paletteDiv = document.getElementById("palette");
+
+        function getRandomColor() {
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function generateRandomPalette() {
+            paletteDiv.innerHTML = "";
+            for (let i = 0; i < 5; i++) {
+                createColorBox(getRandomColor());
+            }
+        }
+
+        function generateComplementaryPalette() {
+            paletteDiv.innerHTML = "";
+            const baseColor = getRandomColor();
+            createColorBox(baseColor);
+            const compColor = complementaryColor(baseColor);
+            createColorBox(compColor);
+            for (let i = 0; i < 3; i++) {
+                createColorBox(getRandomColor());
+            }
+        }
+
+        function complementaryColor(hex) {
+            hex = hex.replace("#", "");
+            const r = 255 - parseInt(hex.substring(0, 2), 16);
+            const g = 255 - parseInt(hex.substring(2, 4), 16);
+            const b = 255 - parseInt(hex.substring(4, 6), 16);
+            return `rgb(${r},${g},${b})`;
+        }
+
+        function createColorBox(color) {
+            const div = document.createElement("div");
+            div.className = "color-box";
+            div.style.background = color;
+            div.innerText = color.toUpperCase();
+            div.onclick = () => copyToClipboard(color);
+            paletteDiv.appendChild(div);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied: " + text);
+            });
+        }
+
+        // THEME-BASED PALETTES
+        const themes = {
+            minimalist: ["#FFFFFF", "#F5F5F5", "#CCCCCC", "#999999", "#333333"],
+            cool: ["#0077B6", "#00B4D8", "#90E0EF", "#CAF0F8", "#03045E"],
+            warm: ["#FF5733", "#FF8D1A", "#FFC300", "#FF5733", "#C70039"],
+            eco: ["#2E7D32", "#66BB6A", "#A5D6A7", "#C8E6C9", "#1B5E20"]
+        };
+
+        function generateTheme(theme) {
+            paletteDiv.innerHTML = "";
+            themes[theme].forEach(color => createColorBox(color));
+        }
+
+        // Default load
+        generateRandomPalette();
+    </script>
+</body>
+
+</html>
